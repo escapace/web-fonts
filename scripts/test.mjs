@@ -28,7 +28,8 @@ await build({
   bundle: true,
   platform: 'node',
   target: 'node14.17.0',
-  format: 'esm',
+  format: 'cjs',
+  external: ['esbuild'],
   outbase: directorySrc,
   outdir: directoryTests,
   logLevel: 'info'
