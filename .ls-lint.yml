@@ -4,7 +4,7 @@ ls:
   .spec.ts: kebab-case
 
 ignore:
-  - test/fonts.config.ts
+  - test/web-fonts.config.ts
   - coverage
   - .circleci
   - .eslintrc.json

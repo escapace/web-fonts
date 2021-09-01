@@ -20,8 +20,8 @@ process.umask(0o022)
 process.chdir(cwd)
 
 await Promise.all(
-  Object.keys(options).map(async (key) => {
-    const { outdir, format } = options[key]
+  Object.keys(options).map(async (format) => {
+    const { outdir } = options[format]
 
     await remove(outdir)
     await mkdir(outdir, { recursive: true })
@@ -36,7 +36,7 @@ await Promise.all(
       tsconfig: path.join(cwd, 'tsconfig-build.json'),
       external: ['esbuild'],
       outbase: path.join(cwd, 'src'),
-      outdir,
+      outfile: path.join(outdir, `index.${format === 'esm' ? 'mjs' : 'cjs'}`),
       logLevel: 'info'
     })
   })

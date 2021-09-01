@@ -1,15 +1,17 @@
 import { build } from 'esbuild'
 import path from 'path'
 import { TextDecoder } from 'util'
-import { TypeLocales } from './schema'
+import { configuration } from './utilities/configuration'
 import { createData } from './utilities/create-data'
 
-export const run = async (locales: TypeLocales) => {
-  // Look at configs at cwd
+export const run = async () => {
+  const locales = await configuration()
+
   const data = createData(locales)
 
   const { outputFiles: webFontLoaderFiles } = await build({
     entryPoints: [path.join(__dirname, '../../src/font-loader/browser.ts')],
+    absWorkingDir: __dirname,
     bundle: true,
     minify: true,
     platform: 'browser',
@@ -30,6 +32,7 @@ export const run = async (locales: TypeLocales) => {
   await build({
     entryPoints: [path.join(__dirname, '../../src/font-loader/server.ts')],
     outfile: path.join(__dirname, 'ssr.js'),
+    absWorkingDir: __dirname,
     format: 'esm',
     platform: 'node',
     write: true,
@@ -44,3 +47,5 @@ export const run = async (locales: TypeLocales) => {
     }
   })
 }
+
+run()

@@ -3,10 +3,12 @@ import fastGlob from 'fast-glob'
 import { remove } from 'fs-extra'
 import { mkdir } from 'fs/promises'
 import path from 'path'
-
 import { fileURLToPath } from 'url'
 
-const directoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../')
+const directoryRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../'
+)
 const directoryTests = path.join(directoryRoot, 'lib/tests')
 const directorySrc = path.join(directoryRoot, 'src')
 
@@ -27,7 +29,7 @@ await build({
   sourcemap: true,
   bundle: true,
   platform: 'node',
-  target: 'node14.17.0',
+  target: [`node${process.version.slice(1)}`],
   format: 'cjs',
   external: ['esbuild'],
   outbase: directorySrc,
