@@ -7,40 +7,27 @@ import { fileURLToPath } from 'url'
 
 const cwd = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../')
 
-const options = {
-  cjs: {
-    outdir: path.join(cwd, 'lib/cjs')
-  },
-  esm: {
-    outdir: path.join(cwd, 'lib/esm')
-  }
-}
-
 process.umask(0o022)
 process.chdir(cwd)
 
-await Promise.all(
-  Object.keys(options).map(async (format) => {
-    const { outdir } = options[format]
+const outdir = path.join(cwd, 'lib/cjs')
 
-    await remove(outdir)
-    await mkdir(outdir, { recursive: true })
+await remove(outdir)
+await mkdir(outdir, { recursive: true })
 
-    await build({
-      entryPoints: ['src/index.ts'],
-      sourcemap: true,
-      bundle: true,
-      platform: 'node',
-      target: 'node14.17.0',
-      format,
-      tsconfig: path.join(cwd, 'tsconfig-build.json'),
-      external: ['esbuild'],
-      outbase: path.join(cwd, 'src'),
-      outfile: path.join(outdir, `index.${format === 'esm' ? 'mjs' : 'cjs'}`),
-      logLevel: 'info'
-    })
-  })
-)
+await build({
+  entryPoints: ['src/index.ts'],
+  sourcemap: true,
+  bundle: true,
+  platform: 'node',
+  target: 'node14.17.0',
+  format: 'cjs',
+  tsconfig: path.join(cwd, 'tsconfig-build.json'),
+  external: ['esbuild'],
+  outbase: path.join(cwd, 'src'),
+  outfile: path.join(outdir, `index.cjs`),
+  logLevel: 'info'
+})
 
 await remove(path.join(cwd, 'lib/types'))
 

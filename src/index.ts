@@ -5,13 +5,18 @@ import { configuration } from './utilities/configuration'
 import { createData } from './utilities/create-data'
 
 export const run = async () => {
+  const cwd = process.cwd()
+
   const locales = await configuration()
 
   const data = createData(locales)
 
+  const absWorkingDir = path.resolve(__dirname, '../../')
+  const outfile = path.join(cwd, 'ssr.js')
+
   const { outputFiles: webFontLoaderFiles } = await build({
-    entryPoints: [path.join(__dirname, '../../src/font-loader/browser.ts')],
-    absWorkingDir: __dirname,
+    entryPoints: [path.join(absWorkingDir, 'src/font-loader/browser.ts')],
+    absWorkingDir,
     bundle: true,
     minify: true,
     platform: 'browser',
@@ -30,9 +35,9 @@ export const run = async () => {
     .join('')
 
   await build({
-    entryPoints: [path.join(__dirname, '../../src/font-loader/server.ts')],
-    outfile: path.join(__dirname, 'ssr.js'),
-    absWorkingDir: __dirname,
+    entryPoints: [path.join(absWorkingDir, 'src/font-loader/server.ts')],
+    outfile,
+    absWorkingDir,
     format: 'esm',
     platform: 'node',
     write: true,
@@ -48,4 +53,4 @@ export const run = async () => {
   })
 }
 
-run()
+void run()

@@ -1,9 +1,12 @@
 {
-  "name": "@escapace/typescript-library-starter",
+  "name": "@escapace/web-fonts",
   "description": "",
   "version": "0.0.0",
   "author": "escapace <opensource@escapace.com>",
-  "bugs": "https://github.com/escapace/typescript-library-starter/issues",
+  "bugs": "https://github.com/escapace/web-fonts/issues",
+  "dependencies": {
+    "esbuild": "0.12.24"
+  },
   "devDependencies": {
     "@commitlint/cli": "12.1.4",
     "@commitlint/config-conventional": "12.1.4",
@@ -21,7 +24,6 @@
     "chai": "4.3.4",
     "clean-css": "5.1.5",
     "codecov": "3.8.2",
-    "esbuild": "0.12.24",
     "eslint": "7.27.0",
     "eslint-config-escapace": "3.8.0",
     "eslint-config-prettier": "8.3.0",
@@ -56,12 +58,13 @@
     "node": ">=14.17.0"
   },
   "files": [
-    "lib"
+    "lib",
+    "src/font-loader"
   ],
-  "homepage": "https://github.com/escapace/typescript-library-starter",
+  "homepage": "https://github.com/escapace/web-fonts",
   "license": "MPL-2.0",
   "private": true,
-  "repository": "https://github.com/escapace/typescript-library-starter.git",
+  "repository": "https://github.com/escapace/web-fonts.git",
   "scripts": {
     "build": "node ./scripts/build.mjs",
     "lint": "ls-lint && eslint 'src/**/*.ts?(x)'",
@@ -70,5 +73,5 @@
     "typecheck": "tsc --noEmit"
   },
   "sideEffects": false,
-  "type": "module"
+  "type": "commonjs"
 }
