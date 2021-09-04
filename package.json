@@ -21,7 +21,7 @@
     "chai": "4.3.4",
     "clean-css": "5.1.5",
     "codecov": "3.8.2",
-    "esbuild": "0.12.24",
+    "esbuild": "0.12.25",
     "eslint": "7.27.0",
     "eslint-config-escapace": "3.8.0",
     "eslint-config-prettier": "8.3.0",
