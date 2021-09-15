@@ -55,7 +55,7 @@
     "typescript": "4.3.2",
     "url-join": "4.0.1",
     "utility-types": "3.10.0",
-    "zod": "3.8.1"
+    "zod": "3.8.2"
   },
   "engines": {
     "node": ">=14.17.0"
