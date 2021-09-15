@@ -5,7 +5,7 @@
   "author": "escapace <opensource@escapace.com>",
   "bugs": "https://github.com/escapace/web-fonts/issues",
   "dependencies": {
-    "esbuild": "0.12.24"
+    "esbuild": "0.12.28"
   },
   "devDependencies": {
     "@commitlint/cli": "12.1.4",
