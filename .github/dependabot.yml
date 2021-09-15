@@ -30,3 +30,14 @@ updates:
     day: saturday
     time: '07:00'
     timezone: GMT
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: weekly
+    day: saturday
+    time: '07:00'
+    timezone: GMT
+  open-pull-requests-limit: 10
+  commit-message:
+    prefix: fix
+    include: scope

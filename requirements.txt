@@ -1,0 +1,5 @@
+Brotli==1.0.9
+fonttools==4.26.2
+lxml==4.6.3
+unicodedata2==13.0.0.post2
+zopfli==0.1.8

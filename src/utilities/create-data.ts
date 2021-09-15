@@ -1,6 +1,7 @@
 import CleanCSS from 'clean-css'
 import {
   flatMap,
+  fromPairs,
   map,
   mapValues,
   omit,
@@ -10,7 +11,7 @@ import {
   uniqBy,
   values
 } from 'lodash-es'
-import { DataFont, DataLocales, SchemaLocales, TypeLocales } from '../schema'
+import { DataFont, DataLocales, State } from '../schema'
 import { createClass } from '../utilities/create-class'
 
 interface Accumulator {
@@ -71,39 +72,57 @@ const wrap = (value: string[], key: string): string | undefined => {
   }
 }
 
-export const createData = (_locales: TypeLocales) => {
-  const localeAccumulator = mapValues(
-    SchemaLocales.parse(_locales),
-    (value, locale) =>
-      reduce(
-        map(value, (value, className) => createClass(locale, className, value)),
-        (acc, value) => {
-          const values = accumulate(acc, value)
-
-          const fonts = uniqBy(
-            [
-              ...acc.fonts,
-              ...map(value.fonts, (value) =>
-                pick(value, ['family', 'slug', 'style', 'testString', 'weight'])
-              )
-            ],
-            (value) => value.slug
+export const createData = async (state: State) => {
+  const localeAccumulator = fromPairs(
+    await Promise.all(
+      map(state.locales, async (value, locale): Promise<
+        [string, AccumulatorWithFonts]
+      > => {
+        const classes = await Promise.all(
+          map(value, async (value, className) =>
+            createClass(locale, className, value, state)
           )
+        )
 
-          return {
-            ...values,
-            fonts
-          }
-        },
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        {
-          fontFace: [],
-          fonts: [],
-          noScriptStyle: [],
-          resourceHint: [],
-          style: []
-        } as AccumulatorWithFonts
-      )
+        const withFonts: AccumulatorWithFonts = reduce(
+          classes,
+          (acc, value) => {
+            const values = accumulate(acc, value)
+
+            const fonts = uniqBy(
+              [
+                ...acc.fonts,
+                ...map(value.fonts, (value) =>
+                  pick(value, [
+                    'family',
+                    'slug',
+                    'style',
+                    'testString',
+                    'weight'
+                  ])
+                )
+              ],
+              (value) => value.slug
+            )
+
+            return {
+              ...values,
+              fonts
+            }
+          },
+          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+          {
+            fontFace: [],
+            fonts: [],
+            noScriptStyle: [],
+            resourceHint: [],
+            style: []
+          } as AccumulatorWithFonts
+        )
+
+        return [locale, withFonts]
+      })
+    )
   )
 
   const locales: DataLocales = mapValues(localeAccumulator, (value) => ({

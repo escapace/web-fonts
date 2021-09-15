@@ -27,6 +27,9 @@ jobs:
         uses: actions/setup-node@v2.4.0
         with:
           node-version: 16
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
       - name: Cache
         uses: actions/cache@v2.1.6
         with:
@@ -34,8 +37,17 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      - name: Cache
+        uses: actions/cache@v2.1.6
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          pip3 install -r requirements.txt
       - name: Typecheck
         run: npm run typecheck
       - name: Test

@@ -1,22 +1,58 @@
 import { build } from 'esbuild'
 import path from 'path'
 import { TextDecoder } from 'util'
+import { Options, SchemaLocales, State } from './schema'
 import { configuration } from './utilities/configuration'
 import { createData } from './utilities/create-data'
 
-export const run = async () => {
-  const cwd = process.cwd()
-
-  const locales = await configuration()
-
-  const data = createData(locales)
-
+const createState = async (options: Options): Promise<State> => {
+  const cwd = options.cwd ?? process.cwd()
+  const fontsDir = path.resolve(cwd, options.fontsDir ?? 'public/assets/fonts')
+  const publicDir = options.publicDir ?? '/assets/fonts'
+  const fontLoaderPath = path.resolve(
+    cwd,
+    options.fontLoaderPath ?? 'src/font-loader.js'
+  )
+  const cacheFonts: Map<string, true> = new Map()
   const absWorkingDir = path.resolve(__dirname, '../../')
-  const outfile = path.join(cwd, 'ssr.js')
+
+  const sourceWebFontLoader = path.join(
+    absWorkingDir,
+    'src/font-loader/browser.ts'
+  )
+  const sourceServerFontLoader = path.join(
+    absWorkingDir,
+    'src/font-loader/server.ts'
+  )
+
+  const scriptFontStrip = path.join(
+    absWorkingDir,
+    'src/utilities/font-strip.py'
+  )
+
+  const locales = SchemaLocales.parse(await configuration(cwd))
+
+  return {
+    absWorkingDir,
+    cacheFonts,
+    cwd,
+    fontLoaderPath,
+    scriptFontStrip,
+    fontsDir,
+    locales,
+    publicDir,
+    sourceServerFontLoader,
+    sourceWebFontLoader
+  }
+}
+
+export const run = async (options: Options = {}) => {
+  const state = await createState(options)
+  const data = await createData(state)
 
   const { outputFiles: webFontLoaderFiles } = await build({
-    entryPoints: [path.join(absWorkingDir, 'src/font-loader/browser.ts')],
-    absWorkingDir,
+    entryPoints: [state.sourceWebFontLoader],
+    absWorkingDir: state.absWorkingDir,
     bundle: true,
     minify: true,
     platform: 'browser',
@@ -35,9 +71,9 @@ export const run = async () => {
     .join('')
 
   await build({
-    entryPoints: [path.join(absWorkingDir, 'src/font-loader/server.ts')],
-    outfile,
-    absWorkingDir,
+    entryPoints: [state.sourceServerFontLoader],
+    outfile: state.fontLoaderPath,
+    absWorkingDir: state.absWorkingDir,
     format: 'esm',
     platform: 'node',
     write: true,

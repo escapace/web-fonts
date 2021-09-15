@@ -1,17 +1,20 @@
 import { find, flatMap, forEach, map, uniq } from 'lodash-es'
-import { TypeInferClass } from '../schema'
+import { State, TypeInferClass } from '../schema'
 import { combinations } from './combinations'
 import { createBlock } from './create-block'
 import { createFont } from './create-font'
 
-export const createClass = (
+export const createClass = async (
   locale: string,
   className: string,
-  value: TypeInferClass
+  value: TypeInferClass,
+  state: State
 ) => {
   const newValue = {
     ...value,
-    fonts: map(value.fonts, (value) => createFont(value))
+    fonts: await Promise.all(
+      map(value.fonts, async (value) => createFont(value, state))
+    )
   }
 
   const classWeight = newValue.fonts[0].weight

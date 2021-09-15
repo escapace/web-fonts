@@ -1,4 +1,5 @@
 lib
+.python-version
 
 .DS_Store
 .awcache

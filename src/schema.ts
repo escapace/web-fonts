@@ -2,10 +2,12 @@ import { includes, map, uniq } from 'lodash-es'
 import { z } from 'zod'
 import { RESOURCE_HINTS, STYLES, WEIGHTS } from './constants'
 import { createSlug } from './utilities/create-slug'
+import { parseUnicodeRange } from './utilities/parse-unicode-range'
 
 export const SchemaFont = z
   .object({
     family: z.string(),
+    source: z.string(),
     // TODO: oblique with angle and range
     style: z.optional(
       z
@@ -28,7 +30,12 @@ export const SchemaFont = z
         .nonempty()
         .refine((value) => includes(RESOURCE_HINTS, value))
     ),
-    unicodeRange: z.optional(z.string().nonempty())
+    unicodeRange: z.optional(
+      z
+        .string()
+        .nonempty()
+        .refine((value) => parseUnicodeRange(value).toHexRangeString())
+    )
   })
   .strict()
 
@@ -87,4 +94,24 @@ export interface DataLocales {
   [x: string]: DataClass & {
     fonts: DataFont[]
   }
+}
+
+export interface Options {
+  cwd?: string
+  fontsDir?: string
+  fontLoaderPath?: string
+  publicDir?: string
+}
+
+export interface State {
+  absWorkingDir: string
+  cacheFonts: Map<string, true>
+  cwd: string
+  fontLoaderPath: string
+  fontsDir: string
+  locales: TypeInferLocales
+  publicDir: string
+  scriptFontStrip: string
+  sourceServerFontLoader: string
+  sourceWebFontLoader: string
 }
