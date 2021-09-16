@@ -62,7 +62,6 @@
     "url-join": "4.0.1",
     "utility-types": "3.10.0",
     "wrap-ansi": "8.0.1",
-    "zod": "3.8.1",
     "zod": "3.8.2"
   },
   "engines": {
