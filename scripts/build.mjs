@@ -22,6 +22,9 @@ await build({
   platform: 'node',
   target: 'node14.17.0',
   format: 'cjs',
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('production')
+  },
   tsconfig: path.join(cwd, 'tsconfig-build.json'),
   external: ['esbuild'],
   outbase: path.join(cwd, 'src'),

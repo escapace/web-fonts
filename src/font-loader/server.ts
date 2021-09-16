@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/promise-function-async */
 
-import type { DataLocales } from '../schema'
+import type { DataLocales } from '../types'
 
 declare const __WEB_FONT_LOADER__: string
 declare const __DATA_LOCALES__: DataLocales

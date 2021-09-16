@@ -3,9 +3,7 @@ import Hashids from 'hashids'
 import { filter, join } from 'lodash-es'
 import { HASHS_LENGHT, HASH_ALPHABET } from '../constants'
 
-export const createHash = (
-  ...value: [string, ...Array<string | number | undefined>]
-) =>
+export const createHash = (...value: [...Array<string | number | undefined>]) =>
   new Hashids('', HASHS_LENGHT, HASH_ALPHABET)
     .encodeHex(
       _createHash('sha1')

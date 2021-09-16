@@ -1,6 +1,7 @@
-import { includes, map, uniq } from 'lodash-es'
+import { includes, map, sortBy, uniq } from 'lodash-es'
+import type { Ora } from 'ora'
 import { z } from 'zod'
-import { RESOURCE_HINTS, STYLES, WEIGHTS } from './constants'
+import { STYLES, WEIGHTS } from './constants'
 import { createSlug } from './utilities/create-slug'
 import { parseUnicodeRange } from './utilities/parse-unicode-range'
 
@@ -23,18 +24,34 @@ export const SchemaFont = z
         .refine((value) => includes(WEIGHTS, value))
       // .transform((value) => weightName(value as ValuesType<typeof WEIGHTS>))
     ),
+    display: z.optional(
+      z
+        .literal('auto')
+        .or(z.literal('block'))
+        .or(z.literal('swap'))
+        .or(z.literal('fallback'))
+        .or(z.literal('optional'))
+    ),
+    formats: z
+      .optional(
+        z
+          .array(z.literal('woff').or(z.literal('woff2')))
+          .refine((value) => value.length !== 0)
+          .transform((value) =>
+            sortBy(uniq(value), (value) => (value === 'woff2' ? 0 : 1))
+          )
+      )
+      .default(['woff', 'woff2']),
     testString: z.optional(z.string().nonempty()),
     resourceHint: z.optional(
-      z
-        .string()
-        .nonempty()
-        .refine((value) => includes(RESOURCE_HINTS, value))
+      z.literal('preload').or(z.literal('prefetch'))
+      // .refine((value) => includes(RESOURCE_HINTS, value))
     ),
     unicodeRange: z.optional(
       z
         .string()
         .nonempty()
-        .refine((value) => parseUnicodeRange(value).toHexRangeString())
+        .transform((value) => parseUnicodeRange(value).toHexRangeString())
     )
   })
   .strict()
@@ -83,15 +100,12 @@ export interface DataFont {
   family: string
 }
 
-export interface DataClass {
-  fontFace: string
-  style: string | undefined
-  noScriptStyle: string | undefined
-  resourceHint: string | undefined
-}
-
 export interface DataLocales {
-  [x: string]: DataClass & {
+  [x: string]: {
+    fontFace: string
+    style: string | undefined
+    noScriptStyle: string | undefined
+    resourceHint: string | undefined
     fonts: DataFont[]
   }
 }
@@ -103,10 +117,39 @@ export interface Options {
   publicDir?: string
 }
 
+export interface Size {
+  brotli: number
+  gzip: number
+}
+
+export interface SizeFont extends Size {
+  file: string
+}
+
+export type RecordSizeFont = Record<string, SizeFont[]>
+
+export interface SizePart extends Size {
+  key: 'fontFace' | 'noScriptStyle' | 'resourceHint' | 'style' | 'script'
+}
+
+export interface SizeLocale {
+  totalFonts: Size
+  total: Size
+  fonts: SizeFont[]
+  totalParts: Size
+  parts: SizePart[]
+}
+
+export type RecordSizeLocale = Record<string, SizeLocale>
+
 export interface State {
   absWorkingDir: string
-  cacheFonts: Map<string, true>
+  cacheFonts: Map<
+    string,
+    [TypeInferFont, TypeInferFontExtended, () => Promise<SizeFont[]>]
+  >
   cwd: string
+  error: (value: unknown) => never
   fontLoaderPath: string
   fontsDir: string
   locales: TypeInferLocales
@@ -114,4 +157,24 @@ export interface State {
   scriptFontStrip: string
   sourceServerFontLoader: string
   sourceWebFontLoader: string
+  spinner: Ora
 }
+
+export interface Data {
+  style: string | undefined
+  fontFace: string | undefined
+  noScriptStyle: string | undefined
+  fonts: Array<[string, DataFont]>
+  localeIndex: Array<[string, string[]]>
+  locales: DataLocales
+}
+
+export interface TypeInferFontExtended
+  extends Omit<TypeInferFont, 'resourceHint'> {
+  slug: string
+  fontFace: string
+  resourceHint: string[]
+}
+
+export type SlugParts = 'family' | 'style' | 'weight' | 'unicodeRange'
+export type SlugNonParts = Exclude<keyof (TypeFont | TypeInferFont), SlugParts>

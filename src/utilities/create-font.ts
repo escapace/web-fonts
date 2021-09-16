@@ -1,86 +1,29 @@
-import execa from 'execa'
-import { mkdirp, pathExists } from 'fs-extra'
-import { compact, includes, map } from 'lodash-es'
-import path from 'path'
+import { compact, isEqual, pick } from 'lodash-es'
 import urljoin from 'url-join'
-import { State, TypeInferFont } from '../schema'
+import { SLUG_NON_PARTS } from '../constants'
+import { State, TypeInferFont, TypeInferFontExtended } from '../types'
 import { createSlug } from './create-slug'
+import { describeFont } from './describe-font'
 import { fontFaceSrc } from './font-face-src'
+import { writeFont } from './write-font'
 
-export const createFont = async (value: TypeInferFont, state: State) => {
-  const slug = createSlug(value)
-  const formats = ['woff2', 'woff'] as const
-
-  const source = path.resolve(state.cwd, value.source)
-
-  if (!(await pathExists(source))) {
-    throw new Error(`'${value.source}': no such file`)
-  }
-
-  if (!includes(['.woff', '.ttf', '.otf'], path.extname(source))) {
-    throw new Error(
-      `'${value.source}': not a ttf or cff-flavored opentype (.otf or .ttf) or woff (.woff) font file`
-    )
-  }
-
-  await mkdirp(state.fontsDir)
-
-  await Promise.all(
-    map(formats, async (format) => {
-      const outputFile = path.join(state.fontsDir, `${slug}.${format}`)
-
-      // TODO: cache
-
-      const fonttools = await execa(
-        'pyftsubset',
-        compact([
-          source,
-          value.unicodeRange !== undefined
-            ? `--unicodes=${value.unicodeRange}`
-            : undefined,
-          `--layout-features='*'`,
-          `--obfuscate-names`,
-          `--output-file=${outputFile}`,
-          `--flavor=${format}`,
-          format === 'woff' ? '--with-zopfli' : undefined
-        ])
-      )
-
-      const fontStrip = await execa(state.scriptFontStrip, ['-f', outputFile])
-
-      if (
-        !(await pathExists(outputFile)) ||
-        fonttools.exitCode !== 0 ||
-        fontStrip.exitCode !== 0
-      ) {
-        throw new Error(`'${value.source}': fonttools error`)
-      }
-    })
-  )
-
-  const src: string[] = formats.map((format) =>
+const createFontExtended = (
+  slug: string,
+  value: TypeInferFont,
+  state: State
+): TypeInferFontExtended => {
+  const srcOfFormat = (format: 'woff' | 'woff2') =>
     urljoin(state.publicDir, `${slug}.${format}`)
-  )
 
-  const resourceHint = (() => {
-    const lines: string[] = []
+  const src: string[] = value.formats.map((format) => srcOfFormat(format))
 
-    if (value.resourceHint === undefined) {
-      return lines
-    }
-
-    const url: string | undefined = src.filter((string) =>
-      string.endsWith('.woff2')
-    )[0]
-
-    if (url !== undefined) {
-      lines.push(
-        `<link rel="${value.resourceHint}" href="${url}" as="font" type="font/woff2" crossorigin>`
-      )
-    }
-
-    return lines
-  })()
+  const resourceHint = compact([
+    value.resourceHint === undefined
+      ? undefined
+      : `<link rel="${value.resourceHint}" href="${srcOfFormat(
+          value.formats[0]
+        )}" as="font" type="font/${value.formats[0]}" crossorigin>`
+  ])
 
   const fontFace = [
     '@font-face {',
@@ -91,6 +34,9 @@ export const createFont = async (value: TypeInferFont, state: State) => {
     value.unicodeRange === undefined
       ? undefined
       : `  unicode-range: ${value.unicodeRange};`,
+    value.display === undefined
+      ? undefined
+      : `  font-display: ${value.display};`,
     '}'
   ]
     .filter((value) => value !== undefined)
@@ -102,4 +48,34 @@ export const createFont = async (value: TypeInferFont, state: State) => {
     fontFace,
     resourceHint
   }
+}
+
+export const createFont = (
+  value: TypeInferFont,
+  state: State
+): TypeInferFontExtended => {
+  const slug = createSlug(value)
+
+  if (state.cacheFonts.has(slug)) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const [cachedValue, cachedExtended] = state.cacheFonts.get(slug)!
+
+    if (
+      !isEqual(pick(cachedValue, SLUG_NON_PARTS), pick(value, SLUG_NON_PARTS))
+    ) {
+      state.error(`conflicting values for ${describeFont(value)}`)
+    }
+
+    return cachedExtended
+  }
+
+  const extended = createFontExtended(slug, value, state)
+
+  state.cacheFonts.set(slug, [
+    value,
+    extended,
+    async () => writeFont(slug, value, state)
+  ])
+
+  return extended
 }

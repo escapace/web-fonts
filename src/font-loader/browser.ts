@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/promise-function-async */
 import FontFaceObserver from 'fontfaceobserver'
-import type { DataFont as Font } from '../schema'
+import type { DataFont as Font } from '../types'
 
 declare const __DATA_LOCALE_INDEX__: Array<readonly [string, string[]]>
 declare const __DATA_FONTS__: Array<readonly [string, Font]>

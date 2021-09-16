@@ -1,10 +1,10 @@
-import { find, flatMap, forEach, map, uniq } from 'lodash-es'
-import { State, TypeInferClass } from '../schema'
+import { find, flatMap, map, uniq } from 'lodash-es'
+import { State, TypeInferClass } from '../types'
 import { combinations } from './combinations'
 import { createBlock } from './create-block'
 import { createFont } from './create-font'
 
-export const createClass = async (
+export const createClass = (
   locale: string,
   className: string,
   value: TypeInferClass,
@@ -12,21 +12,18 @@ export const createClass = async (
 ) => {
   const newValue = {
     ...value,
-    fonts: await Promise.all(
-      map(value.fonts, async (value) => createFont(value, state))
-    )
+    fonts: map(value.fonts, (value) => createFont(value, state))
   }
 
   const classWeight = newValue.fonts[0].weight
   const classStyle = newValue.fonts[0].style
 
-  const resourceHint: string[] = uniq(
-    flatMap(newValue.fonts, (value) => value.resourceHint)
+  const resourceHint: string[] = flatMap(
+    newValue.fonts,
+    (value) => value.resourceHint
   )
 
-  const fontFace: string[] = uniq(
-    flatMap(newValue.fonts, (value) => value.fontFace)
-  )
+  const fontFace: string[] = flatMap(newValue.fonts, (value) => value.fontFace)
 
   const selectorFallback = `html:lang(${locale}) .${className}`
 
@@ -64,27 +61,27 @@ export const createClass = async (
       )
   )
 
-  forEach(comb, (value) => {
-    const selector = `html${map(
-      value,
-      ({ slug }) => `[data-fonts-loaded~='${slug}']`
-    ).join('')}:lang(${locale}) .${className}`
+  style.push(
+    ...map(comb, (value) => {
+      const selector = `html${map(
+        value,
+        ({ slug }) => `[data-fonts-loaded~='${slug}']`
+      ).join('')}:lang(${locale}) .${className}`
 
-    const block = `${selector} { ${createBlock({
-      family: [...map(value, (value) => value.family), ...newValue.fallback],
-      weight: newValue.fallback.length > 0 ? undefined : classWeight,
-      style: newValue.fallback.length > 0 ? undefined : classStyle
-    })} }`
-
-    style.push(block)
-  })
+      return `${selector} { ${createBlock({
+        family: [...map(value, (value) => value.family), ...newValue.fallback],
+        weight: newValue.fallback.length > 0 ? undefined : classWeight,
+        style: newValue.fallback.length > 0 ? undefined : classStyle
+      })} }`
+    })
+  )
 
   return {
     ...newValue,
     className,
-    resourceHint,
-    fontFace,
-    noScriptStyle,
-    style
+    resourceHint: uniq(resourceHint),
+    fontFace: uniq(fontFace),
+    noScriptStyle: uniq(noScriptStyle),
+    style: uniq(style)
   }
 }
