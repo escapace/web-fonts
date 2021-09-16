@@ -16,7 +16,7 @@
     "@types/clean-css": "4.2.5",
     "@types/fontfaceobserver": "2.1.0",
     "@types/fs-extra": "9.0.12",
-    "@types/lodash-es": "4.17.4",
+    "@types/lodash-es": "4.17.5",
     "@types/mocha": "8.2.2",
     "@types/node": "15.6.1",
     "@types/url-join": "4.0.1",
