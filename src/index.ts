@@ -5,7 +5,7 @@ import { sizes } from './utilities/sizes'
 import { writeFontLoader } from './utilities/write-font-loader'
 import { writeFonts } from './utilities/write-fonts'
 
-export const run = async (options: Options = {}) => {
+export const webFonts = async (options: Options = {}) => {
   const state = await createState(options)
 
   try {
@@ -14,13 +14,11 @@ export const run = async (options: Options = {}) => {
     const { webFontLoaderContents } = await writeFontLoader(state, data)
     const _sizes = await sizes(data, fontSizes, webFontLoaderContents)
 
-    state.spinner.clear()
-    state.spinner.stop()
+    state.console.spinner.clear()
+    state.console.spinner.stop()
 
-    console.log(_sizes)
+    return { sizes, _sizes, data }
   } catch (e) {
-    state.error(e)
+    return state.console.exit(e)
   }
 }
-
-void run()

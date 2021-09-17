@@ -63,7 +63,7 @@ export const createFont = (
     if (
       !isEqual(pick(cachedValue, SLUG_NON_PARTS), pick(value, SLUG_NON_PARTS))
     ) {
-      state.error(`conflicting values for ${describeFont(value)}`)
+      state.console.exit(`conflicting values for ${describeFont(value)}`)
     }
 
     return cachedExtended

@@ -3,9 +3,10 @@ import fastGlob from 'fast-glob'
 import { filter, find, isString, map } from 'lodash-es'
 import path, { extname } from 'path'
 import { createContext, runInNewContext } from 'vm'
-import { SchemaLocales, State } from '../types'
+import { SchemaLocales } from '../types'
+import { Console } from './console'
 
-export const configuration = async (cwd: string, error: State['error']) => {
+export const configuration = async (cwd: string, console: Console) => {
   try {
     const candidates = await fastGlob(
       ['web-fonts.config.?(m)(j|t)s', 'web-fonts.config.json'],
@@ -24,7 +25,7 @@ export const configuration = async (cwd: string, error: State['error']) => {
     )
 
     if (configFiles.length === 0) {
-      error(`Could not find a configuration file.`)
+      console.exit(`Could not find a configuration file.`)
     }
 
     const configFile = configFiles[0]
@@ -65,6 +66,6 @@ export const configuration = async (cwd: string, error: State['error']) => {
 
     return { locales, configFile: path.relative(cwd, configFile) }
   } catch (e) {
-    error(e)
+    console.exit(e)
   }
 }

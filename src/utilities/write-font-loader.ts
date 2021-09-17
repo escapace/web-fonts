@@ -45,7 +45,10 @@ export const writeFontLoader = async (
     }
   })
 
-  state.spinner.text = `wrote ${path.relative(state.cwd, state.fontLoaderPath)}`
+  state.console.spinner.text = `wrote ${path.relative(
+    state.cwd,
+    state.fontLoaderPath
+  )}`
 
   return { webFontLoaderContents }
 }

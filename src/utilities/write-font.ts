@@ -13,11 +13,11 @@ export const writeFont = async (
   const source = path.resolve(state.cwd, value.source)
 
   if (!(await pathExists(source))) {
-    state.error(`'${value.source}': no such file`)
+    state.console.exit(`'${value.source}': no such file`)
   }
 
   if (!includes(['.otf', '.ttf', '.woff'], path.extname(source))) {
-    state.error(
+    state.console.exit(
       `'${value.source}': not a ttf or cff-flavored opentype (.otf or .ttf) or woff (.woff) font file`
     )
   }
@@ -50,12 +50,12 @@ export const writeFont = async (
         fonttools.exitCode !== 0 ||
         fontStrip.exitCode !== 0
       ) {
-        state.error(`'${value.source}': fonttools error`)
+        state.console.exit(`'${value.source}': fonttools error`)
       }
 
       const file = path.relative(state.cwd, outputFile)
 
-      state.spinner.text = `wrote ${file}`
+      state.console.spinner.text = `wrote ${file}`
 
       return {
         file,

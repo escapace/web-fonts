@@ -15,6 +15,7 @@ updates:
     - dependency-name: "clean-css"
     - dependency-name: "esbuild"
     - dependency-name: "execa"
+    - dependency-name: "find-up"
     - dependency-name: "fontfaceobserver"
     - dependency-name: "fs-extra"
     - dependency-name: "gzip-size"

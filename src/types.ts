@@ -1,7 +1,7 @@
 import { includes, map, sortBy, uniq } from 'lodash-es'
-import type { Ora } from 'ora'
 import { z } from 'zod'
 import { STYLES, WEIGHTS } from './constants'
+import { Console } from './utilities/console'
 import { createSlug } from './utilities/create-slug'
 import { parseUnicodeRange } from './utilities/parse-unicode-range'
 
@@ -115,6 +115,7 @@ export interface Options {
   fontsDir?: string
   fontLoaderPath?: string
   publicDir?: string
+  cli?: boolean
 }
 
 export interface Size {
@@ -149,7 +150,6 @@ export interface State {
     [TypeInferFont, TypeInferFontExtended, () => Promise<SizeFont[]>]
   >
   cwd: string
-  error: (value: unknown) => never
   fontLoaderPath: string
   fontsDir: string
   locales: TypeInferLocales
@@ -157,7 +157,7 @@ export interface State {
   scriptFontStrip: string
   sourceServerFontLoader: string
   sourceWebFontLoader: string
-  spinner: Ora
+  console: Console
 }
 
 export interface Data {

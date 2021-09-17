@@ -4,9 +4,6 @@
   "version": "0.0.0",
   "author": "escapace <opensource@escapace.com>",
   "bugs": "https://github.com/escapace/web-fonts/issues",
-  "dependencies": {
-    "esbuild": "0.12.28"
-  },
   "devDependencies": {
     "@commitlint/cli": "12.1.4",
     "@commitlint/config-conventional": "12.1.4",
@@ -25,11 +22,11 @@
     "@typescript-eslint/parser": "4.25.0",
     "brotli-size": "4.0.0",
     "bytes": "3.1.0",
-    "c8": "7.7.2",
     "chai": "4.3.4",
     "chalk": "4.1.2",
     "clean-css": "5.1.5",
     "codecov": "3.8.2",
+    "esbuild": "0.12.28",
     "eslint": "7.27.0",
     "eslint-config-escapace": "3.8.0",
     "eslint-config-prettier": "8.3.0",
@@ -44,6 +41,7 @@
     "fastify": "3.20.2",
     "fastify-sensible": "3.1.1",
     "fastify-static": "4.2.3",
+    "find-up": "6.0.0",
     "fontfaceobserver": "2.1.0",
     "fs-extra": "10.0.0",
     "gzip-size": "6.0.0",
@@ -53,6 +51,7 @@
     "lint-staged": "11.0.0",
     "lodash-es": "4.17.21",
     "mocha": "8.4.0",
+    "nyc": "15.1.0",
     "ora": "6.0.1",
     "prettier": "2.3.0",
     "prettier-config-escapace": "1.0.0",
@@ -80,7 +79,7 @@
     "build": "node ./scripts/build.mjs",
     "lint": "ls-lint && eslint 'src/**/*.ts?(x)'",
     "prepare": "is-ci || husky install",
-    "test": "node ./scripts/test.mjs && c8 mocha --enable-source-maps 'lib/tests/**/*.spec.js'",
+    "test": "node ./scripts/test.mjs && nyc mocha --enable-source-maps 'lib/tests/**/*.spec.js'",
     "typecheck": "tsc --noEmit"
   },
   "sideEffects": false,
