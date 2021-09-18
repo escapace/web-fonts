@@ -113,7 +113,7 @@ export interface DataLocales {
 export interface Options {
   cwd?: string
   outputDir?: string
-  loaderPath?: string
+  jsonFile?: string
   publicPath?: string
   cli?: boolean
 }
@@ -150,7 +150,7 @@ export interface State {
     [TypeInferFont, TypeInferFontExtended, () => Promise<SizeFont[]>]
   >
   cwd: string
-  loaderPath: string
+  jsonFile: string
   outputDir: string
   locales: TypeInferLocales
   publicPath: string

@@ -1,7 +1,7 @@
 import { findUp } from 'find-up'
 import path from 'path'
 import {
-  DEFAULT_LOADER_PATH,
+  DEFAULT_JSON_FILE,
   DEFAULT_OUTPUT_DIR,
   DEFAULT_PUBLIC_PATH
 } from '../constants'
@@ -14,10 +14,7 @@ export const createState = async (options: Options): Promise<State> => {
   const cwd = options.cwd ?? process.cwd()
   const outputDir = path.resolve(cwd, options.outputDir ?? DEFAULT_OUTPUT_DIR)
   const publicPath = options.publicPath ?? DEFAULT_PUBLIC_PATH
-  const loaderPath = path.resolve(
-    cwd,
-    options.loaderPath ?? DEFAULT_LOADER_PATH
-  )
+  const jsonFile = path.resolve(cwd, options.jsonFile ?? DEFAULT_JSON_FILE)
   const cacheFonts: State['cacheFonts'] = new Map()
 
   const packageJSON = await findUp('package.json', { cwd: __dirname })
@@ -51,7 +48,7 @@ export const createState = async (options: Options): Promise<State> => {
     cacheFonts,
     console: _console,
     cwd,
-    loaderPath,
+    jsonFile,
     outputDir,
     locales,
     publicPath,

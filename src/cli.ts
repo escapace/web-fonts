@@ -4,7 +4,7 @@ import arg from 'arg'
 import chalk from 'chalk'
 import { isError } from 'lodash-es'
 import {
-  DEFAULT_LOADER_PATH,
+  DEFAULT_JSON_FILE,
   DEFAULT_OUTPUT_DIR,
   DEFAULT_PUBLIC_PATH
 } from './constants'
@@ -13,6 +13,9 @@ import { Options } from './types'
 
 const help = (code: 0 | 1 = 0, message?: string): never => {
   console.log(`Usage: web-fonts [options]
+
+  Writes locale-optmizied fonts, and a json file with a font-loader script,
+  per-locale styles and resource hints.
 
   Requires a ${chalk.yellow(
     'web-fonts.config.(ts|mjs|cjs|js|json)'
@@ -23,7 +26,7 @@ const help = (code: 0 | 1 = 0, message?: string): never => {
 
 Options:
   --output-dir    font output directory path (default: ${DEFAULT_OUTPUT_DIR})
-  --loader-path   font loader output file path (default: ${DEFAULT_LOADER_PATH})
+  --json-file     json file output path (default: ${DEFAULT_JSON_FILE})
   --public-path   font public prefix on the web server (default: ${DEFAULT_PUBLIC_PATH})
   -h, --help      display help
 
@@ -44,7 +47,7 @@ const options = (): Options => {
     const args = arg({
       '--help': Boolean,
       '--output-dir': String,
-      '--loader-path': String,
+      '--json-file': String,
       '--public-path': String,
       '-h': '--help'
     })
@@ -54,7 +57,7 @@ const options = (): Options => {
     }
 
     return {
-      loaderPath: args['--loader-path'],
+      jsonFile: args['--json-file'],
       outputDir: args['--output-dir'],
       publicPath: args['--public-path']
     }

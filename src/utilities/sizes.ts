@@ -20,7 +20,7 @@ import { sumSize } from './sum-size'
 export const sizes = async (
   data: Data,
   fontSizes: RecordSizeFont,
-  webFontLoaderContents: string
+  script: string
 ): Promise<RecordSizeLocale> => {
   return fromPairs(
     await Promise.all(
@@ -30,7 +30,7 @@ export const sizes = async (
         const totalFonts: Size = sumSize(...fonts)
 
         const recordParts: Record<string, string> = assign(
-          { script: webFontLoaderContents },
+          { script },
           pickBy(
             locale,
             (value, key): value is string =>
