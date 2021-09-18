@@ -29,7 +29,7 @@ export const writeFontLoader = async (
 
   await build({
     entryPoints: [state.sourceServerFontLoader],
-    outfile: state.fontLoaderPath,
+    outfile: state.loaderPath,
     absWorkingDir: state.absWorkingDir,
     format: 'esm',
     platform: 'node',
@@ -47,7 +47,7 @@ export const writeFontLoader = async (
 
   state.console.spinner.text = `wrote ${path.relative(
     state.cwd,
-    state.fontLoaderPath
+    state.loaderPath
   )}`
 
   return { webFontLoaderContents }

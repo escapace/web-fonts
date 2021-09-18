@@ -112,9 +112,9 @@ export interface DataLocales {
 
 export interface Options {
   cwd?: string
-  fontsDir?: string
-  fontLoaderPath?: string
-  publicDir?: string
+  outputDir?: string
+  loaderPath?: string
+  publicPath?: string
   cli?: boolean
 }
 
@@ -150,10 +150,10 @@ export interface State {
     [TypeInferFont, TypeInferFontExtended, () => Promise<SizeFont[]>]
   >
   cwd: string
-  fontLoaderPath: string
-  fontsDir: string
+  loaderPath: string
+  outputDir: string
   locales: TypeInferLocales
-  publicDir: string
+  publicPath: string
   scriptFontStrip: string
   sourceServerFontLoader: string
   sourceWebFontLoader: string

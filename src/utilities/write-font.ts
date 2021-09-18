@@ -22,11 +22,11 @@ export const writeFont = async (
     )
   }
 
-  await mkdirp(state.fontsDir)
+  await mkdirp(state.outputDir)
 
   return Promise.all(
     map(value.formats, async (format): Promise<SizeFont> => {
-      const outputFile = path.join(state.fontsDir, `${slug}.${format}`)
+      const outputFile = path.join(state.outputDir, `${slug}.${format}`)
 
       const fonttools = await execa(
         'pyftsubset',

@@ -16,7 +16,7 @@ await remove(outdir)
 await mkdir(outdir, { recursive: true })
 
 await build({
-  entryPoints: ['src/index.ts'],
+  entryPoints: ['src/index.ts', 'src/cli.ts'],
   sourcemap: true,
   bundle: true,
   platform: 'node',
@@ -25,7 +25,8 @@ await build({
   tsconfig: path.join(cwd, 'tsconfig-build.json'),
   external: ['esbuild'],
   outbase: path.join(cwd, 'src'),
-  outfile: path.join(outdir, `index.cjs`),
+  outdir: outdir,
+  outExtension: { '.js': '.cjs' },
   logLevel: 'info'
 })
 

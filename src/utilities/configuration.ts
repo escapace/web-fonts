@@ -9,7 +9,13 @@ import { Console } from './console'
 export const configuration = async (cwd: string, console: Console) => {
   try {
     const candidates = await fastGlob(
-      ['web-fonts.config.?(m)(j|t)s', 'web-fonts.config.json'],
+      [
+        'web-fonts.config.ts',
+        'web-fonts.config.mjs',
+        'web-fonts.config.cjs',
+        'web-fonts.config.js',
+        'web-fonts.config.json'
+      ],
       {
         absolute: true,
         cwd,

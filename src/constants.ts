@@ -1,5 +1,8 @@
 import { SlugNonParts, SlugParts } from './types'
 
+export const DEFAULT_PUBLIC_PATH = '/assets/fonts'
+export const DEFAULT_OUTPUT_DIR = 'public/assets/fonts'
+export const DEFAULT_LOADER_PATH = 'src/font-loader.js'
 export const WEIGHTS = [100, 200, 300, 400, 500, 600, 700, 800, 900] as const
 export const STYLES = ['normal', 'italic', 'oblique'] as const
 export const HASHS_LENGHT = 7

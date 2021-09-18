@@ -1,5 +1,10 @@
 import { findUp } from 'find-up'
 import path from 'path'
+import {
+  DEFAULT_LOADER_PATH,
+  DEFAULT_OUTPUT_DIR,
+  DEFAULT_PUBLIC_PATH
+} from '../constants'
 import { Options, State } from '../types'
 import { configuration } from './configuration'
 import { Console } from './console'
@@ -7,11 +12,11 @@ import { Console } from './console'
 export const createState = async (options: Options): Promise<State> => {
   const _console = new Console(options)
   const cwd = options.cwd ?? process.cwd()
-  const fontsDir = path.resolve(cwd, options.fontsDir ?? 'public/assets/fonts')
-  const publicDir = options.publicDir ?? '/assets/fonts'
-  const fontLoaderPath = path.resolve(
+  const outputDir = path.resolve(cwd, options.outputDir ?? DEFAULT_OUTPUT_DIR)
+  const publicPath = options.publicPath ?? DEFAULT_PUBLIC_PATH
+  const loaderPath = path.resolve(
     cwd,
-    options.fontLoaderPath ?? 'src/font-loader.js'
+    options.loaderPath ?? DEFAULT_LOADER_PATH
   )
   const cacheFonts: State['cacheFonts'] = new Map()
 
@@ -46,10 +51,10 @@ export const createState = async (options: Options): Promise<State> => {
     cacheFonts,
     console: _console,
     cwd,
-    fontLoaderPath,
-    fontsDir,
+    loaderPath,
+    outputDir,
     locales,
-    publicDir,
+    publicPath,
     scriptFontStrip,
     sourceServerFontLoader,
     sourceWebFontLoader

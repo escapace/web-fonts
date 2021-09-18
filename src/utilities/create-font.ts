@@ -13,7 +13,7 @@ const createFontExtended = (
   state: State
 ): TypeInferFontExtended => {
   const srcOfFormat = (format: 'woff' | 'woff2') =>
-    urljoin(state.publicDir, `${slug}.${format}`)
+    urljoin(state.publicPath, `${slug}.${format}`)
 
   const src: string[] = value.formats.map((format) => srcOfFormat(format))
 

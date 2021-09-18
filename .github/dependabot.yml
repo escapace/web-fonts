@@ -9,6 +9,7 @@ updates:
     - dependency-name: "@types/lodash-es"
     - dependency-name: "@types/url-join"
     - dependency-name: "@types/wrap-ansi"
+    - dependency-name: "arg"
     - dependency-name: "brotli-size"
     - dependency-name: "bytes"
     - dependency-name: "chalk"
