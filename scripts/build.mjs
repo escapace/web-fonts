@@ -5,44 +5,45 @@ import { mkdir } from 'fs/promises'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-const cwd = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../')
+const WD = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../')
 
 process.umask(0o022)
-process.chdir(cwd)
+process.chdir(WD)
 
-const outdir = path.join(cwd, 'lib/cjs')
+const OUTDIR_CLI = path.join(WD, 'lib/cli')
 
-await remove(outdir)
-await mkdir(outdir, { recursive: true })
+await remove(OUTDIR_CLI)
+await mkdir(OUTDIR_CLI, { recursive: true })
 
 await build({
-  entryPoints: ['src/index.ts', 'src/cli.ts'],
+  entryPoints: ['src/cli.ts'],
+  absWorkingDir: WD,
   sourcemap: true,
   bundle: true,
   platform: 'node',
   target: 'node14.17.0',
   format: 'cjs',
-  tsconfig: path.join(cwd, 'tsconfig-build.json'),
+  tsconfig: path.join(WD, 'tsconfig-build.json'),
   external: ['esbuild'],
-  outbase: path.join(cwd, 'src'),
-  outdir: outdir,
+  outbase: path.join(WD, 'src'),
+  outdir: OUTDIR_CLI,
   outExtension: { '.js': '.cjs' },
   logLevel: 'info'
 })
 
-await remove(path.join(cwd, 'lib/types'))
-
-await execa(
-  path.join(cwd, 'node_modules', '.bin', 'tsc'),
-  [
-    '-p',
-    './tsconfig-build.json',
-    '--emitDeclarationOnly',
-    '--declarationDir',
-    'lib/types'
-  ],
-  { all: true, cwd }
-).catch((reason) => {
-  console.error(reason.all)
-  process.exit(reason.exitCode)
-})
+// await remove(path.join(WD, 'lib/types'))
+//
+// await execa(
+//   path.join(WD, 'node_modules', '.bin', 'tsc'),
+//   [
+//     '-p',
+//     './tsconfig-build.json',
+//     '--emitDeclarationOnly',
+//     '--declarationDir',
+//     'lib/types'
+//   ],
+//   { all: true, WD }
+// ).catch((reason) => {
+//   console.error(reason.all)
+//   process.exit(reason.exitCode)
+// })

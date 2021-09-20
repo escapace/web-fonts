@@ -68,6 +68,7 @@ export class CharacterSet {
   }
 
   compressRange(codePoints: number[]) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result: any[] = []
 
     for (let i = 0; i < codePoints.length; i += 1) {

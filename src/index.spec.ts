@@ -2,7 +2,7 @@ import { assert } from 'chai'
 import path from 'path'
 import { webFonts } from './index'
 
-describe('./test/web-fonts.spec.ts', function () {
+describe('src/index.spec.ts', function () {
   this.timeout(30000)
 
   it('happy-path', async () => {

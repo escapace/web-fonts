@@ -111,11 +111,12 @@ export interface DataLocales {
 }
 
 export interface Options {
-  cwd?: string
-  outputDir?: string
-  jsonFile?: string
-  publicPath?: string
   cli?: boolean
+  cwd?: string
+  jsonFile?: string
+  loaderFile?: string
+  outputDir?: string
+  publicPath?: string
 }
 
 export interface Size {
@@ -153,20 +154,21 @@ export interface State {
   jsonFile: string
   outputDir: string
   locales: TypeInferLocales
+  loaderFile: string | undefined
   publicPath: string
   scriptFontStrip: string
-  sourceServerFontLoader: string
   sourceWebFontLoader: string
   console: Console
 }
 
 export interface Data {
-  style: string | undefined
   fontFace: string | undefined
-  noScriptStyle: string | undefined
-  fonts: Array<[string, DataFont]>
+  fonts: DataFont[]
+  fontsIndex: Array<[string, DataFont]>
   localeIndex: Array<[string, string[]]>
   locales: DataLocales
+  noScriptStyle: string | undefined
+  style: string | undefined
 }
 
 export interface TypeInferFontExtended

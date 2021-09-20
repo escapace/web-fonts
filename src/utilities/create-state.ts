@@ -1,4 +1,5 @@
-import { findUp } from 'find-up'
+import findUp from 'find-up'
+import { includes, isString } from 'lodash-es'
 import path from 'path'
 import {
   DEFAULT_JSON_FILE,
@@ -10,28 +11,36 @@ import { configuration } from './configuration'
 import { Console } from './console'
 
 export const createState = async (options: Options): Promise<State> => {
-  const _console = new Console(options)
+  const console = new Console(options)
   const cwd = options.cwd ?? process.cwd()
   const outputDir = path.resolve(cwd, options.outputDir ?? DEFAULT_OUTPUT_DIR)
   const publicPath = options.publicPath ?? DEFAULT_PUBLIC_PATH
   const jsonFile = path.resolve(cwd, options.jsonFile ?? DEFAULT_JSON_FILE)
   const cacheFonts: State['cacheFonts'] = new Map()
+  const loaderFile =
+    options.loaderFile === undefined
+      ? undefined
+      : path.resolve(cwd, options.loaderFile)
+
+  if (isString(loaderFile)) {
+    if (!includes(['.js', '.mjs'], path.extname(loaderFile))) {
+      return console.exit(
+        '--loader-file option supports .js, and .mjs extensions'
+      )
+    }
+  }
 
   const packageJSON = await findUp('package.json', { cwd: __dirname })
 
   if (packageJSON === undefined) {
-    return _console.exit('Damaged installation')
+    return console.exit('Damaged installation')
   }
 
   const absWorkingDir = path.dirname(packageJSON)
 
   const sourceWebFontLoader = path.join(
     absWorkingDir,
-    'src/font-loader/browser.ts'
-  )
-  const sourceServerFontLoader = path.join(
-    absWorkingDir,
-    'src/font-loader/server.ts'
+    'src/utilities/font-loader.ts'
   )
 
   const scriptFontStrip = path.join(
@@ -39,21 +48,21 @@ export const createState = async (options: Options): Promise<State> => {
     'src/utilities/font-strip.py'
   )
 
-  const { locales, configFile } = await configuration(cwd, _console)
+  const { locales, configFile } = await configuration(cwd, console)
 
-  _console.spinner.text = `read ${configFile}`
+  console.spinner.text = `read ${configFile}`
 
   return {
     absWorkingDir,
     cacheFonts,
-    console: _console,
+    console,
     cwd,
     jsonFile,
-    outputDir,
+    loaderFile,
     locales,
+    outputDir,
     publicPath,
     scriptFontStrip,
-    sourceServerFontLoader,
     sourceWebFontLoader
   }
 }

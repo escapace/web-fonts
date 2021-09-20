@@ -1,0 +1,8 @@
+# Ignore everything (folders and files) on root only
+/*
+!api
+!vercel.json
+!templates
+!public
+!package-lock.json
+!package.json

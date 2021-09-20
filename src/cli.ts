@@ -28,6 +28,7 @@ Options:
   --output-dir    font output directory path (default: ${DEFAULT_OUTPUT_DIR})
   --json-file     json file output path (default: ${DEFAULT_JSON_FILE})
   --public-path   font public prefix on the web server (default: ${DEFAULT_PUBLIC_PATH})
+  --loader-file   output path for a font loader script
   -h, --help      display help
 
 Examples:
@@ -46,8 +47,9 @@ const options = (): Options => {
   try {
     const args = arg({
       '--help': Boolean,
-      '--output-dir': String,
       '--json-file': String,
+      '--loader-file': String,
+      '--output-dir': String,
       '--public-path': String,
       '-h': '--help'
     })
@@ -59,7 +61,8 @@ const options = (): Options => {
     return {
       jsonFile: args['--json-file'],
       outputDir: args['--output-dir'],
-      publicPath: args['--public-path']
+      publicPath: args['--public-path'],
+      loaderFile: args['--loader-file']
     }
   } catch (e) {
     return help(1, isError(e) ? e.message : undefined)

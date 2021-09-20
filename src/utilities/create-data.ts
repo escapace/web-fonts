@@ -121,14 +121,22 @@ export const createData = (state: State): Data => {
     )
   })) as DataLocales
 
-  const fonts: Array<[string, DataFont]> = flatMap(locales, (value) =>
+  const fontsIndex: Array<[string, DataFont]> = flatMap(locales, (value) =>
     map(value.fonts, (value): [string, DataFont] => [value.slug, value])
   )
 
-  const localeIndex: Array<[string, string[]]> = map(locales, (value, locale): [
-    string,
-    string[]
-  ] => [locale, map(value.fonts, (value) => value.slug)])
+  const localeIndex: Array<[string, string[]]> = map(
+    locales,
+    (value, locale): [string, string[]] => [
+      locale,
+      map(value.fonts, (value) => value.slug)
+    ]
+  )
+
+  const fonts = uniqBy(
+    flatMap(fontsIndex, ([_, value]) => value),
+    ({ slug }) => slug
+  )
 
   const { style, fontFace, noScriptStyle } = mapValues(
     omit(
@@ -148,5 +156,13 @@ export const createData = (state: State): Data => {
     (value, key) => wrap(value, key)
   )
 
-  return { style, fontFace, noScriptStyle, fonts, localeIndex, locales }
+  return {
+    style,
+    fontFace,
+    noScriptStyle,
+    fonts,
+    fontsIndex,
+    localeIndex,
+    locales
+  }
 }

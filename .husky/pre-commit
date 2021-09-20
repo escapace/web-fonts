@@ -1,7 +1,11 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx --no-install ls-lint
+npx syncpack fix-mismatches --source 'package.json' --source 'example/package.json'
+npx syncpack set-semver-ranges --dev --source 'package.json' --source 'example/package.json'
+npx syncpack format --source 'package.json' --source 'example/package.json'
+
+npm run lint
 npx --no-install lint-staged
-npm run typecheck
+npm run typecheck && cd example && npm run typecheck && cd ../
 npm run test

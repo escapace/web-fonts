@@ -3,3 +3,7 @@ ls:
     .ts: kebab-case
     .d.ts: kebab-case
     .spec.ts: kebab-case
+  example/src:
+    .ts: kebab-case
+    .d.ts: kebab-case
+    .spec.ts: kebab-case

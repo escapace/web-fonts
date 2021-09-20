@@ -1,7 +1,7 @@
 import { assert } from 'chai'
 import { fromPath } from './from-path'
 
-describe('./src/utilities/from-path.spec.ts', function () {
+describe('src/utilities/from-path.spec.ts', function () {
   it('stringifys simple paths with single quotes', function () {
     assert.deepEqual(
       fromPath(['a']),

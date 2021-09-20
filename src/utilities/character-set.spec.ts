@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { CharacterSet } from './character-set'
 
-describe('./src/utilities/character-set.spec.ts', () => {
+describe('src/utilities/character-set.spec.ts', () => {
   describe('#constructor', () => {
     it('should create a CharacterSet instance with a single code point', () => {
       const cs = new CharacterSet(1)

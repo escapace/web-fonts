@@ -46,10 +46,13 @@ jobs:
             ${{ runner.os }}-pip-
       - name: Install dependencies
         run: |
-          npm ci
           pip3 install -r requirements.txt
+          npm ci
+          cd example && npm ci
       - name: Typecheck
-        run: npm run typecheck
+        run: |
+          npm run typecheck
+          cd example && npm run typecheck
       - name: Test
         run: npm run test
       - name: Build

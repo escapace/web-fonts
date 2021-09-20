@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { parseUnicodeRange } from './parse-unicode-range'
 
-describe('./src/utilities/parse-unicode-range.spec.ts', () => {
+describe('src/utilities/parse-unicode-range.spec.ts', () => {
   it('parses an empty string', () => {
     const cs = parseUnicodeRange('')
 
