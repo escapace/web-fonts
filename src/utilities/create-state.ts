@@ -1,4 +1,4 @@
-import findUp from 'find-up'
+import { findUp } from 'find-up'
 import { includes, isString } from 'lodash-es'
 import path from 'path'
 import {
