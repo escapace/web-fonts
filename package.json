@@ -41,7 +41,7 @@
     "eslint-plugin-no-null": "1.0.2",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "5.1.0",
-    "execa": "4.1.0",
+    "execa": "5.1.1",
     "fast-glob": "3.2.5",
     "find-up": "2.1.0",
     "fontfaceobserver": "2.1.0",
