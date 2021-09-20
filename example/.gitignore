@@ -1,5 +1,8 @@
 /api
 /lib
+/public
+/src/web-font-loader.d.ts
+/src/web-font-loader.js
 
 .DS_Store
 .awcache
