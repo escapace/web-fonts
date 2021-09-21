@@ -1,6 +1,6 @@
 import { build, OutputFile } from 'esbuild'
-import { writeJSON } from 'fs-extra'
-import path from 'path'
+import { mkdirp, writeJSON } from 'fs-extra'
+import path, { dirname } from 'path'
 import { TextDecoder } from 'util'
 import { Data, State } from '../types'
 
@@ -42,6 +42,7 @@ export const writeJSONFile = async (
     style: data.style
   }
 
+  await mkdirp(dirname(state.jsonFile))
   await writeJSON(state.jsonFile, json, { spaces: '  ' })
 
   state.console.spinner.text = `wrote ${path.relative(

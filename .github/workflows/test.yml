@@ -23,7 +23,8 @@ jobs:
         uses: actions/setup-node@v2.4.0
         with:
           node-version: 16
-      - uses: actions/setup-python@v2
+      - name: setup python
+        uses: actions/setup-python@v2
         with:
           python-version: '3.x'
       - name: node cache
