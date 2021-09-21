@@ -50,14 +50,11 @@ jobs:
       - name: test
         run: npm run test
       - name: build
-        run: npm run build
-      - name: typecheck example
         run: |
+          npm run build
           cd example
+          npm run web-fonts
           npm run typecheck
-      - name: build example
-        run: |
-          cd example
           npm run build
       - name: code coverage
         uses: codecov/codecov-action@v2.1.0

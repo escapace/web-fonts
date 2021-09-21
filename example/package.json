@@ -31,10 +31,10 @@
   ],
   "private": true,
   "scripts": {
-    "build": "node ../lib/cli/cli.cjs --declaration --loader-file src/web-font-loader.js && node ./scripts/build.mjs",
+    "web-fonts": "node ../lib/cli/cli.cjs --declaration --loader-file src/web-font-loader.js",
+    "build": "node ./scripts/build.mjs",
     "dev": "npm run build && node ./lib/dev.cjs",
     "lint": "eslint 'src/**/*.ts?(x)'",
-    "typecheck": "tsc --noEmit",
-    "vercel": "npm run build && npx vercel --prod"
+    "typecheck": "tsc --noEmit"
   }
 }
