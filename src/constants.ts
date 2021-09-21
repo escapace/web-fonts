@@ -23,3 +23,26 @@ export const SLUG_NON_PARTS: SlugNonParts[] = [
   'testString',
   'resourceHint'
 ]
+
+export const LOADER_DECLARATION = `export interface WebFont {
+  style?: string | undefined
+  weight?: number | undefined
+  testString?: string | undefined
+  slug: string
+  family: string
+}
+
+export type WebFontLoaderSubscribe = (cb: (webFonts: WebFont[]) => void) => void
+
+export type WebFontLoader = (locale: string) => WebFont[]
+
+export declare const webFontLoaderSubscribe: WebFontLoaderSubscribe
+export declare const webFontLoader: WebFontLoader
+
+declare global {
+  interface Window {
+    webFontLoaderSubscribe: WebFontLoaderSubscribe
+    webFontLoader: WebFontLoader
+  }
+}
+`

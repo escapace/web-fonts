@@ -117,6 +117,7 @@ export interface Options {
   loaderFile?: string
   outputDir?: string
   publicPath?: string
+  declaration?: boolean
 }
 
 export interface Size {
@@ -159,6 +160,7 @@ export interface State {
   scriptFontStrip: string
   sourceWebFontLoader: string
   console: Console
+  declaration: boolean
 }
 
 export interface Data {

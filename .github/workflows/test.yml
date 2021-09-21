@@ -14,50 +14,52 @@ on:
       - LICENSE
 jobs:
   test:
-    name: Test
+    name: test
     runs-on: ubuntu-latest
     steps:
-      - name: Install required packages
-        run: |
-          sudo apt-get update
-          sudo apt-get install libgbm-dev
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v2
-      - name: Setup Node.js
+      - name: setup node
         uses: actions/setup-node@v2.4.0
         with:
           node-version: 16
       - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
-      - name: Cache
+      - name: node cache
         uses: actions/cache@v2.1.6
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Cache
+      - name: pip cache
         uses: actions/cache@v2.1.6
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
-      - name: Install dependencies
+      - name: install dependencies
         run: |
           pip3 install -r requirements.txt
           npm ci
           cd example && npm ci
-      - name: Typecheck
-        run: |
-          npm run typecheck
-          cd example && npm run typecheck
-      - name: Test
+      - name: typecheck
+        run: npm run typecheck
+      - name: test
         run: npm run test
-      - name: Build
+      - name: build
         run: npm run build
-      - name: Code Coverage
+      - name: typecheck example
+        run: |
+          cd example
+          npm run typecheck
+      - name: build example
+        run: |
+          cd example
+          npm run build
+      - name: code coverage
         uses: codecov/codecov-action@v2.1.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

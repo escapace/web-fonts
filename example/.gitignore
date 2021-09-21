@@ -3,6 +3,7 @@
 /public
 /src/web-font-loader.d.ts
 /src/web-font-loader.js
+/src/web-fonts.json
 
 .DS_Store
 .awcache

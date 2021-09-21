@@ -1,10 +1,40 @@
 import chalk from 'chalk'
 import { isArray, isError, isString, map, repeat } from 'lodash-es'
 import ora, { Ora } from 'ora'
+import stripAnsi from 'strip-ansi'
 import wrapAnsi from 'wrap-ansi'
 import { z } from 'zod'
 import { Options } from '../types'
 import { fromPath } from './from-path'
+
+const wrap = (value: string, label?: string): string => {
+  const MAX_COLUMNS = 100
+
+  if (isString(label)) {
+    const labelLength = stripAnsi(label).length
+
+    const length = Math.min(
+      Math.round((process.stdout.columns / MAX_COLUMNS) * labelLength),
+      labelLength
+    )
+
+    const columns = Math.min(MAX_COLUMNS, process.stdout.columns) - length
+
+    const hard = length < Math.round(labelLength / 2)
+
+    return wrapAnsi(value, columns, { hard })
+      .split('\n')
+      .map(
+        (value, index) =>
+          `${index === 0 ? label : repeat(' ', length)} ${value}`
+      )
+      .join('\n')
+  }
+
+  return wrapAnsi(value, Math.min(MAX_COLUMNS, process.stdout.columns), {
+    hard: true
+  })
+}
 
 export class Console {
   public spinner: Ora
@@ -13,12 +43,6 @@ export class Console {
   constructor(options: Options) {
     this.options = options
     const spinner = ora({ spinner: 'dots' })
-
-    if (options.cli === true) {
-      spinner.start()
-    }
-
-    spinner.text = 'starting up'
 
     this.spinner = spinner
   }
@@ -53,26 +77,15 @@ export class Console {
     }
   }
 
+  log(value: string) {
+    console.log(wrap(value))
+  }
+
+  warn(value: string) {
+    console.log(wrap(value, chalk.bgYellow('WARN')))
+  }
+
   error(value: string) {
-    const label = 'ERROR'
-
-    const MAX_COLUMNS = 100
-
-    const length = Math.min(
-      Math.round((process.stdout.columns / MAX_COLUMNS) * label.length),
-      label.length
-    )
-
-    const columns = Math.min(100, process.stdout.columns) - length
-
-    const hard = length < Math.round(label.length / 2)
-
-    wrapAnsi(value, columns, { hard })
-      .split('\n')
-      .map((value, index) =>
-        console.error(
-          `${index === 0 ? chalk.bgRed(label) : repeat(' ', length)} ${value}`
-        )
-      )
+    console.error(wrap(value, chalk.bgRed('ERROR')))
   }
 }

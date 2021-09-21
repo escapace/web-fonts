@@ -12,6 +12,7 @@ import { Console } from './console'
 
 export const createState = async (options: Options): Promise<State> => {
   const console = new Console(options)
+  const declaration = options.declaration === true
   const cwd = options.cwd ?? process.cwd()
   const outputDir = path.resolve(cwd, options.outputDir ?? DEFAULT_OUTPUT_DIR)
   const publicPath = options.publicPath ?? DEFAULT_PUBLIC_PATH
@@ -23,12 +24,28 @@ export const createState = async (options: Options): Promise<State> => {
       : path.resolve(cwd, options.loaderFile)
 
   if (isString(loaderFile)) {
-    if (!includes(['.js', '.mjs'], path.extname(loaderFile))) {
+    const extension = path.extname(loaderFile)
+
+    if (!includes(['.js', '.mjs'], extension)) {
       return console.exit(
         '--loader-file option supports .js, and .mjs extensions'
       )
     }
+
+    if (extension === '.mjs' && declaration) {
+      console.warn(`.mjs imports in typescript are not supported`)
+    }
   }
+
+  if (loaderFile === undefined && declaration) {
+    console.exit('--declaration flag requires --loader-file option')
+  }
+
+  if (options.cli === true) {
+    console.spinner.start()
+  }
+
+  console.spinner.text = 'starting up'
 
   const packageJSON = await findUp('package.json', { cwd: __dirname })
 
@@ -57,6 +74,7 @@ export const createState = async (options: Options): Promise<State> => {
     cacheFonts,
     console,
     cwd,
+    declaration,
     jsonFile,
     loaderFile,
     locales,
