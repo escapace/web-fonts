@@ -12,7 +12,7 @@ const { exitCode } = await execa(
   'npx',
   [
     'vercel',
-    '--production',
+    '--prod',
     '--scope',
     'escapace',
     `--token=${process.env.VERCEL_TOKEN}`

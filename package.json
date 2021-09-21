@@ -11,7 +11,7 @@
     "@commitlint/cli": "13.1.0",
     "@commitlint/config-conventional": "13.1.0",
     "@ls-lint/ls-lint": "1.10.0",
-    "@semantic-release/exec": "^5.0.0",
+    "@semantic-release/exec": "5.0.0",
     "@types/bytes": "3.1.1",
     "@types/chai": "4.2.21",
     "@types/clean-css": "4.2.5",
