@@ -77,20 +77,3 @@ await build({
   outfile: path.join(outdirLib, 'dev.cjs'),
   logLevel: 'info'
 })
-
-// await remove(path.join(WD, 'lib/types'))
-//
-// await execa(
-//   path.join(WD, 'node_modules', '.bin', 'tsc'),
-//   [
-//     '-p',
-//     './tsconfig-build.json',
-//     '--emitDeclarationOnly',
-//     '--declarationDir',
-//     'lib/types'
-//   ],
-//   { all: true, WD }
-// ).catch((reason) => {
-//   console.error(reason.all)
-//   process.exit(reason.exitCode)
-// })

@@ -1,5 +1,5 @@
 import { build } from 'esbuild'
-import execa from 'execa'
+// import execa from 'execa'
 import { remove } from 'fs-extra'
 import { mkdir } from 'fs/promises'
 import path from 'path'
@@ -23,7 +23,7 @@ await build({
   platform: 'node',
   target: 'node14.17.0',
   format: 'cjs',
-  tsconfig: path.join(WD, 'tsconfig-build.json'),
+  tsconfig: path.join(WD, 'tsconfig.json'),
   external: ['esbuild'],
   outbase: path.join(WD, 'src'),
   outdir: OUTDIR_CLI,
