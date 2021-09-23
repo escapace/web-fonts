@@ -45,11 +45,11 @@ jobs:
       - name: build
         run: |
           npm run build
+          docker build -t ${{ github.repository }}:latest .
           cd example
           npm run web-fonts
           npm run typecheck
           npm run build
-          docker build -t ${{ github.repository }}:latest .
       - name: docker login
         env:
           DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKER_ACCESS_TOKEN }}
