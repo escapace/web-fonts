@@ -1,0 +1,5 @@
+**
+!/scripts/docker-entrypoint.sh
+!/requirements.txt
+!/lib/pack/escapace-web-fonts-0.0.0.tgz
+!/scripts/docker-entrypoint.sh

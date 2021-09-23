@@ -49,6 +49,14 @@ jobs:
           npm run web-fonts
           npm run typecheck
           npm run build
+          docker build -t ${{ github.repository }}:latest .
+      - name: docker login
+        env:
+          DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+          CONTAINER_REGISTRY_TOKEN: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
+        run: |
+          echo ${{ secrets.CONTAINER_REGISTRY_TOKEN }} | docker login ghcr.io -u escapace --password-stdin
+          echo ${{ secrets.DOCKER_ACCESS_TOKEN }} | docker login -u escpc --password-stdin
       - name: release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -34,7 +34,13 @@ Options:
 
 Examples:
   ${chalk.gray('# run in a container')}
-  docker run --rm --mount type=bind,source="$(pwd)",target=/wd -it escapace/web-fonts
+  docker run -it -v "$(pwd)":/wd escapace/web-fonts
+  ${chalk.gray('# set uid, gid and umask')}
+  docker run -it -e UID=$\{UID} -e GID=$\{GID} -e UMASK=0027 -v "$(pwd)":/wd \\
+    escapace/web-fonts
+  ${chalk.gray('# write loader file and typescript declaration')}
+  docker run -it -v "$(pwd)":/wd escapace/web-fonts \\
+    --declaration --loader-file src/web-font-loader.js
   `)
 
   if (message !== undefined) {

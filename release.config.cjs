@@ -1,3 +1,5 @@
+const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY
+
 module.exports = {
   branches: ['trunk'],
   plugins: [
@@ -7,7 +9,19 @@ module.exports = {
       '@semantic-release/exec',
       {
         shell: true,
-        publishCmd: 'node ./scripts/publish.mjs ${nextRelease.version}'
+        publishCmd: [
+          'node ./scripts/publish.mjs ${nextRelease.version}',
+          'docker tag GITHUB_REPOSITORY:latest ghcr.io/GITHUB_REPOSITORY:latest',
+          'docker tag GITHUB_REPOSITORY:latest ghcr.io/GITHUB_REPOSITORY:${nextRelease.version}',
+          'docker push ghcr.io/GITHUB_REPOSITORY:latest',
+          'docker push ghcr.io/GITHUB_REPOSITORY:${nextRelease.version}',
+          'docker push GITHUB_REPOSITORY:latest',
+          'docker push GITHUB_REPOSITORY:${nextRelease.version}'
+        ]
+          .map((string) =>
+            string.replace(/GITHUB_REPOSITORY/g, GITHUB_REPOSITORY)
+          )
+          .join(' && \\\n')
       }
     ],
     '@semantic-release/github'
