@@ -11,6 +11,7 @@ module.exports = {
         shell: true,
         publishCmd: [
           'node ./scripts/publish.mjs ${nextRelease.version}',
+          'docker tag GITHUB_REPOSITORY:latest GITHUB_REPOSITORY:${nextRelease.version}',
           'docker tag GITHUB_REPOSITORY:latest ghcr.io/GITHUB_REPOSITORY:latest',
           'docker tag GITHUB_REPOSITORY:latest ghcr.io/GITHUB_REPOSITORY:${nextRelease.version}',
           'docker push ghcr.io/GITHUB_REPOSITORY:latest',
