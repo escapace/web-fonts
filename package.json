@@ -65,7 +65,7 @@
     "url-join": "4.0.1",
     "utility-types": "3.10.0",
     "wrap-ansi": "8.0.1",
-    "zod": "3.8.2"
+    "zod": "3.9.5"
   },
   "engines": {
     "node": ">=14.17.0"
