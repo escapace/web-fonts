@@ -8,7 +8,7 @@
   },
   "bugs": "https://github.com/escapace/web-fonts/issues",
   "dependencies": {
-    "esbuild": "0.13.2",
+    "esbuild": "0.13.3",
     "fontfaceobserver": "2.1.0"
   },
   "devDependencies": {
