@@ -46,7 +46,7 @@
     "eslint-plugin-promise": "5.1.0",
     "execa": "5.1.1",
     "fast-glob": "3.2.7",
-    "find-up": "6.1.0",
+    "find-up": "6.2.0",
     "fs-extra": "10.0.0",
     "gzip-size": "6.0.0",
     "hashids": "2.2.8",
