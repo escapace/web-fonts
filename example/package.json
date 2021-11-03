@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "author": "escapace <opensource@escapace.com>",
   "dependencies": {
-    "fastify": "3.22.0",
+    "fastify": "3.22.1",
     "fastify-cookie": "^5.3.1",
     "fastify-etag": "^2.1.0",
     "fastify-sensible": "3.1.2",
