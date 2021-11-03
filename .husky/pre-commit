@@ -10,3 +10,5 @@ npm run lint || exit 1
 npx --no-install lint-staged || exit 1
 npm run typecheck && cd example && npm run typecheck && cd ../ || exit 1
 npm run test || exit 1
+
+git add -u
