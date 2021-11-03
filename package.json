@@ -33,7 +33,7 @@
     "bytes": "3.1.0",
     "chai": "4.3.4",
     "chalk": "4.1.2",
-    "clean-css": "5.2.1",
+    "clean-css": "5.2.2",
     "codecov": "3.8.3",
     "eslint": "7.32.0",
     "eslint-config-escapace": "3.10.0",
