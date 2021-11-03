@@ -18,11 +18,11 @@ const external = Object.keys(
 process.umask(0o022)
 process.chdir(absWorkingDir)
 
-const outdirAPI = path.join(absWorkingDir, 'api/')
+const outdirFunctions = path.join(absWorkingDir, 'functions/')
 const outdirLib = path.join(absWorkingDir, 'lib/')
 
-await remove(outdirAPI)
-await mkdir(outdirAPI, { recursive: true })
+await remove(outdirFunctions)
+await mkdir(outdirFunctions, { recursive: true })
 
 await remove(outdirLib)
 await mkdir(outdirLib, { recursive: true })
@@ -56,7 +56,7 @@ await build({
   },
   external,
   outbase: path.join(absWorkingDir, 'src'),
-  outfile: path.join(outdirAPI, 'index.js'),
+  outfile: path.join(outdirFunctions, 'index.js'),
   logLevel: 'info'
 })
 

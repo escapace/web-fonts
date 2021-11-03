@@ -1,9 +1,18 @@
-import { VercelRequest, VercelResponse } from '@vercel/node'
+import { Handler } from '@netlify/functions'
+import awsLambdaFastify from 'aws-lambda-fastify'
 import { createApp } from './create-app'
 
 const app = createApp()
 
-export default async function (req: VercelRequest, res: VercelResponse) {
-  await app.ready()
-  app.server.emit('request', req, res)
-}
+const handler: Handler = awsLambdaFastify(app)
+// async (event, context) => {
+//   awsLambdaFastify(app)
+//   app.server.emit('request', req, res)
+
+//   return {
+//     statusCode: 200,
+//     body: JSON.stringify({ message: 'Hello World' })
+//   }
+// }
+
+export { handler }
