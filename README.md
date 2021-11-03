@@ -8,7 +8,7 @@ A command-line tool that automates web font loading and localization best practi
 * exports @font-face at-rules, classes, noscript styles for each locale
 * writes a font-loader script for loading locale-specific fonts in the browser
 
-Check [web-fonts.vercel.app](https://web-fonts.vercel.app) for a working example. 
+Check [escapace-web-fonts.netlify.app](https://escapace-web-fonts.netlify.app/) for a working example. 
 
 ## Usage
 
