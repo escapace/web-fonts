@@ -48,7 +48,7 @@ await build({
   sourcemap: true,
   bundle: true,
   platform: 'node',
-  target: 'node14.17.0',
+  target: 'node14',
   format: 'cjs',
   tsconfig: path.join(absWorkingDir, 'tsconfig.json'),
   define: {
@@ -66,7 +66,7 @@ await build({
   sourcemap: true,
   bundle: true,
   platform: 'node',
-  target: 'node14.17.0',
+  target: 'node14',
   format: 'cjs',
   tsconfig: path.join(absWorkingDir, 'tsconfig.json'),
   define: {

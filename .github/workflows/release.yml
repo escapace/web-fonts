@@ -51,14 +51,20 @@ jobs:
           npm run web-fonts
           npm run typecheck
           npm run build
-      - name: docker login
+      - name: ghcr.io login
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: dockerhub login
         env:
           DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKER_ACCESS_TOKEN }}
-          CONTAINER_REGISTRY_TOKEN: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
         run: |
-          echo ${{ secrets.CONTAINER_REGISTRY_TOKEN }} | docker login ghcr.io -u escapace --password-stdin
           echo ${{ secrets.DOCKER_ACCESS_TOKEN }} | docker login -u escpc --password-stdin
       - name: release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: npx semantic-release

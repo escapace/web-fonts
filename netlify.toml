@@ -1,0 +1,21 @@
+[build]
+  base = "example"
+  publish = "public/"
+
+[build.processing.js]
+  bundle = true
+  minify = false
+
+[functions]
+  directory = "functions/"
+  included_files = ["templates/*.mustache"]
+
+[context.production.environment]
+NODE_VERSION = "14"
+AWS_LAMBDA_JS_RUNTIME = "nodejs14.x"
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/index"
+  status = 200
+  force = true

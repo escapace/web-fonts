@@ -55,6 +55,7 @@
     "lint-staged": "11.1.2",
     "lodash-es": "4.17.21",
     "mocha": "9.1.1",
+    "netlify-cli": "^6.14.10",
     "nyc": "15.1.0",
     "ora": "6.0.1",
     "prettier": "2.4.1",
@@ -81,8 +82,8 @@
   "repository": "https://github.com/escapace/web-fonts.git",
   "scripts": {
     "build": "node ./scripts/build.mjs && mkdir -p lib/pack && npm pack --pack-destination lib/pack",
-    "build:example": "npm run build && cd example && npm ci && npm run build",
     "lint": "ls-lint && eslint 'src/**/*.ts?(x)' 'example/src/**/*.ts?(x)'",
+    "example:deploy": "netlify deploy --prod",
     "prepare": "is-ci || husky install",
     "test": "node ./scripts/test.mjs && nyc mocha --enable-source-maps 'lib/tests/**/*.spec.js'",
     "typecheck": "tsc --noEmit -p tsconfig-local.json"
