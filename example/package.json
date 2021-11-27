@@ -15,7 +15,7 @@
     "js-cookie": "^3.0.1",
     "lodash-es": "4.17.21",
     "mustache": "4.2.0",
-    "point-of-view": "^4.15.2",
+    "point-of-view": "^4.15.3",
     "prettier": "2.4.1"
   },
   "devDependencies": {
