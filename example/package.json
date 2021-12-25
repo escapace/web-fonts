@@ -5,7 +5,7 @@
   "author": "escapace <opensource@escapace.com>",
   "dependencies": {
     "@netlify/functions": "0.8.0",
-    "aws-lambda-fastify": "1.7.1",
+    "aws-lambda-fastify": "2.0.2",
     "fastify": "3.24.0",
     "fastify-cookie": "^5.3.2",
     "fastify-etag": "^2.1.0",
