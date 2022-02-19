@@ -44,7 +44,7 @@
     "eslint-plugin-no-null": "1.0.2",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "5.1.0",
-    "execa": "5.1.1",
+    "execa": "6.1.0",
     "fast-glob": "3.2.7",
     "find-up": "6.2.0",
     "fs-extra": "10.0.0",
