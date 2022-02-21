@@ -1,5 +1,7 @@
 #!/bin/sh
-set -euo pipefail
+
+set -o errexit
+set -o nounset
 
 if [ -z ${UID+x} ]; then
   echo "UID not set"
@@ -11,8 +13,8 @@ if [ -z ${GID+x} ]; then
   exit 1
 fi
 
-addgroup -S -g $GID node \
-  && adduser -S -u $UID -G node -s /bin/sh node \
+addgroup -S -g "${GID}" node \
+  && adduser -S -u "${UID}" -G node -s /bin/sh node \
   && umask "${UMASK}" \
   && mkdir -p /wd \
   && chown node:node /wd \

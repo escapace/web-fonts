@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { assign, map } from 'lodash-es'
 import { RecordSizeFont, State } from '../types'
 

@@ -74,7 +74,7 @@ export const createFont = (
   state.cacheFonts.set(slug, [
     value,
     extended,
-    async () => writeFont(slug, value, state)
+    async () => await writeFont(slug, value, state)
   ])
 
   return extended

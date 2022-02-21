@@ -17,7 +17,7 @@ module.exports = {
           'docker push ghcr.io/GITHUB_REPOSITORY:${nextRelease.version}',
           'docker push GITHUB_REPOSITORY:latest',
           'docker push GITHUB_REPOSITORY:${nextRelease.version}',
-          'npm run example:deploy'
+          // 'npm run example:deploy'
         ]
           .map((string) =>
             string.replace(/GITHUB_REPOSITORY/g, GITHUB_REPOSITORY)

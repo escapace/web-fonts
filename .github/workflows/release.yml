@@ -1,9 +1,11 @@
 name: release
 on:
-  schedule:
-    - cron: '10 16 * * 2'
-  repository_dispatch:
-    types: [release]
+  push:
+    branches:
+      - trunk
+  pull_request:
+    branches:
+      - trunk
 jobs:
   release:
     name: release
@@ -11,46 +13,39 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: setup node
-        uses: actions/setup-node@v2.4.1
+      - name: pnpm cache
+        uses: actions/cache@v2
         with:
-          node-version: 16
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+      - name: install pnpm
+        uses: pnpm/action-setup@v2.1.0
+        with:
+          version: 6.30.1
+      - name: setup node
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: 17
       - name: setup python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
-      - name: node cache
-        uses: actions/cache@v2.1.6
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: pip cache
-        uses: actions/cache@v2.1.6
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          python-version: '3.10.2'
+          cache: 'pip'
       - name: install dependencies
         run: |
           pip3 install --upgrade pip
           pip3 install -r requirements.txt
-          npm ci
-          cd example && npm ci
+          pnpm install
       - name: typecheck
-        run: npm run typecheck
+        run: pnpm run typecheck
       - name: test
-        run: npm run test
+        run: pnpm run test
       - name: build
         run: |
-          npm run build
+          pnpm run build
           docker build -t ${{ github.repository }}:latest .
-          cd example
-          npm run web-fonts
-          npm run typecheck
-          npm run build
       - name: ghcr.io login
         uses: docker/login-action@v1
         with:
@@ -65,6 +60,4 @@ jobs:
       - name: release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: npx semantic-release
+        run: pnpm exec semantic-release

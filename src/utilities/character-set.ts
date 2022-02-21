@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable @typescript-eslint/restrict-plus-operands */
-/* eslint-disable @typescript-eslint/no-unnecessary-boolean-literal-compare */
-/* eslint-disable @typescript-eslint/prefer-for-of */
-
 export class CharacterSet {
   size = 0
   data: Record<number, boolean> = {}
@@ -11,7 +6,7 @@ export class CharacterSet {
     for (let i = 0; i < args.length; i += 1) {
       const codePoint = args[i]
 
-      if (this.data[codePoint] !== true) {
+      if (!this.data[codePoint]) {
         this.data[codePoint] = true
         this.size += 1
       }
@@ -54,7 +49,7 @@ export class CharacterSet {
     for (const codePoint in this.data) {
       if (
         // this.data.hasOwnProperty(codePoint) &&
-        this.data[codePoint] === true
+        this.data[codePoint]
       ) {
         result.push(parseInt(codePoint, 10))
       }

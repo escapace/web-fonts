@@ -144,7 +144,7 @@ export const createApp = () => {
     '/:locale',
     async (request, reply) => {
       if (!includes(Object.keys(WEB_FONTS.locales), request.params.locale)) {
-        return reply.status(404).send()
+        return await reply.status(404).send()
       }
 
       const l10nCookieContent = createL10nCookieContent(
@@ -178,22 +178,20 @@ export const createApp = () => {
         PRETTIER_CONFIG
       )
 
-      return (
-        reply
-          .setCookie('l10n', JSON.stringify(l10nCookieContent), {
-            secure: false,
-            httpOnly: false,
-            signed: false,
-            sameSite: 'lax',
-            encode
-          })
-          // .header(
-          //   'Cache-Control',
-          //   'public, max-age=0, s-maxage=1, stale-while-revalidate=2'
-          // )
-          .type('text/html')
-          .send(html)
-      )
+      return await reply
+        .setCookie('l10n', JSON.stringify(l10nCookieContent), {
+          secure: false,
+          httpOnly: false,
+          signed: false,
+          sameSite: 'lax',
+          encode
+        })
+        // .header(
+        //   'Cache-Control',
+        //   'public, max-age=0, s-maxage=1, stale-while-revalidate=2'
+        // )
+        .type('text/html')
+        .send(html)
     }
   )
 

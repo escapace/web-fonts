@@ -11,10 +11,11 @@ COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt && rm -f requirements.txt
 
 COPY lib/pack/escapace-web-fonts-0.0.0.tgz /tmp/escapace-web-fonts-0.0.0.tgz
-RUN npm install -g /tmp/escapace-web-fonts-0.0.0.tgz \
-    && rm -f /tmp/escapace-web-fonts-0.0.0.tgz \
-    && deluser --remove-home node \
-    && (delgroup node || true)
+RUN npm install -g pnpm \
+  && pnpm install -g /tmp/escapace-web-fonts-0.0.0.tgz \
+  && rm -f /tmp/escapace-web-fonts-0.0.0.tgz \
+  && deluser --remove-home node \
+  && (delgroup node || true)
 
 COPY scripts/docker-entrypoint.sh /usr/local/bin/
 

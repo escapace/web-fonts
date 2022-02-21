@@ -1,5 +1,5 @@
 import brotliSize from 'brotli-size'
-import gzipSize from 'gzip-size'
+import { gzipSize } from 'gzip-size'
 import { assign } from 'lodash-es'
 import { Size } from '../types'
 

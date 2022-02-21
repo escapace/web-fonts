@@ -1,4 +1,4 @@
-import execa from 'execa'
+import { execa } from 'execa'
 import { mkdirp, pathExists, readFile } from 'fs-extra'
 import { compact, includes, map } from 'lodash-es'
 import path from 'path'
@@ -24,7 +24,7 @@ export const writeFont = async (
 
   await mkdirp(state.outputDir)
 
-  return Promise.all(
+  return await Promise.all(
     map(value.formats, async (format): Promise<SizeFont> => {
       const outputFile = path.join(state.outputDir, `${slug}.${format}`)
 

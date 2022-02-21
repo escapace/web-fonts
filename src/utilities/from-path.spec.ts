@@ -143,6 +143,7 @@ describe('src/utilities/from-path.spec.ts', function () {
   it('stringifys nodes with backslash', function () {
     const originalProperty = ' \\" \\\\" \\\\\\'
     const path = fromPath([' \\" \\\\" \\\\\\'], '"')
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const finalProperty = JSON.parse(path.substring(1, path.length - 1))
 
     assert.deepEqual(

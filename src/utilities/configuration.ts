@@ -1,7 +1,8 @@
 import { build } from 'esbuild'
 import fastGlob from 'fast-glob'
-import { filter, find, isString, map } from 'lodash-es'
+import { filter, find, isString, map, isObject, isEmpty } from 'lodash-es'
 import path, { extname } from 'path'
+import { TextDecoder } from 'util'
 import { createContext, runInNewContext } from 'vm'
 import { SchemaLocales } from '../types'
 import { Console } from './console'
@@ -67,7 +68,18 @@ export const configuration = async (cwd: string, console: Console) => {
     runInNewContext(contents, context)
 
     const locales = SchemaLocales.parse(
-      context.exports.default ?? context.exports
+      find(
+        [
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          context.module.exports.default,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          context.exports.default,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          context.module.exports,
+          context.exports
+        ],
+        (value) => isObject(value) && !isEmpty(value)
+      )
     )
 
     return { locales, configFile: path.relative(cwd, configFile) }

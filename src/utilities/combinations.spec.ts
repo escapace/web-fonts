@@ -2,7 +2,7 @@ import { assert } from 'chai'
 import { combinations } from './combinations'
 
 describe('src/utilities/combinations.spec.ts', () => {
-  it('combinations', async () => {
+  it('combinations', () => {
     assert.deepEqual(combinations(['a', 'b', 'c', 'd']), [
       ['a'],
       ['b'],

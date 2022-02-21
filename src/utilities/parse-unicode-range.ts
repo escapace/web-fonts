@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable @typescript-eslint/prefer-for-of */
+
 import { CharacterSet } from './character-set'
 
 export const parseUnicodeRange = (input: string) => {
@@ -14,7 +14,7 @@ export const parseUnicodeRange = (input: string) => {
     let end = null
 
     if (match != null) {
-      if (match[2].indexOf('?') !== -1) {
+      if (match[2].includes('?')) {
         start = parseInt(match[2].replace('?', '0'), 16)
         end = parseInt(match[2].replace('?', 'f'), 16)
       } else {

@@ -1,5 +1,4 @@
 import { build } from 'esbuild'
-// import execa from 'execa'
 import { remove } from 'fs-extra'
 import { mkdir } from 'fs/promises'
 import path from 'path'
@@ -21,7 +20,7 @@ await build({
   sourcemap: true,
   bundle: true,
   platform: 'node',
-  target: 'node14.17.0',
+  target: 'node16',
   format: 'cjs',
   tsconfig: path.join(WD, 'tsconfig.json'),
   external: ['esbuild'],
@@ -30,20 +29,3 @@ await build({
   outExtension: { '.js': '.cjs' },
   logLevel: 'info'
 })
-
-// await remove(path.join(WD, 'lib/types'))
-//
-// await execa(
-//   path.join(WD, 'node_modules', '.bin', 'tsc'),
-//   [
-//     '-p',
-//     './tsconfig-build.json',
-//     '--emitDeclarationOnly',
-//     '--declarationDir',
-//     'lib/types'
-//   ],
-//   { all: true, WD }
-// ).catch((reason) => {
-//   console.error(reason.all)
-//   process.exit(reason.exitCode)
-// })

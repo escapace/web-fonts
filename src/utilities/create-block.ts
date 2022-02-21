@@ -10,6 +10,7 @@ export const createBlock = (value: {
     `font-family: ${uniq(value.family).join(', ')};`,
     value.weight === undefined
       ? undefined
-      : `font-weight: '${weightName(value.weight)}';`,
+      : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        `font-weight: '${weightName(value.weight)}';`,
     value.style === undefined ? undefined : `font-style: '${value.style}';`
   ].join(' ')
