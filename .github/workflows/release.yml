@@ -47,17 +47,20 @@ jobs:
           pnpm run build
           docker build -t ${{ github.repository }}:latest .
       - name: ghcr.io login
+        if: ${{ github.event_name == 'push' }}
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: dockerhub login
+        if: ${{ github.event_name == 'push' }}
         env:
           DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKER_ACCESS_TOKEN }}
         run: |
           echo ${{ secrets.DOCKER_ACCESS_TOKEN }} | docker login -u escpc --password-stdin
       - name: release
+        if: ${{ github.event_name == 'push' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm exec semantic-release
