@@ -2,4 +2,4 @@ zopfli==0.1.9
 unicodedata2==14.0.0
 Brotli==1.0.9
 fonttools==4.29.1
-lxml==4.6.4
+lxml==4.8.0
