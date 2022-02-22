@@ -20,6 +20,6 @@ addgroup -S -g "${GID}" node \
   && chown node:node /wd \
   && cd /wd \
   && chown "${UID}:${GID}" \
-    /usr/local/lib/node_modules/@escapace/web-fonts/src/utilities/font-loader.ts \
-    /usr/local/lib/node_modules/@escapace/web-fonts/src/utilities/font-strip.py \
+    /usr/local/pnpm-global/5/node_modules/@escapace/web-fonts/src/utilities/font-loader.ts \
+    /usr/local/pnpm-global/5/node_modules/@escapace/web-fonts/src/utilities/font-strip.py \
   && exec sudo -u node web-fonts "$@"

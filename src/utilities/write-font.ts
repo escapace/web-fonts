@@ -43,7 +43,11 @@ export const writeFont = async (
         ])
       )
 
-      const fontStrip = await execa(state.scriptFontStrip, ['-f', outputFile])
+      const fontStrip = await execa('python3', [
+        state.scriptFontStrip,
+        '-f',
+        outputFile
+      ])
 
       if (
         !(await pathExists(outputFile)) ||
