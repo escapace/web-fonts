@@ -1,5 +1,5 @@
 zopfli==0.2.1
 unicodedata2==14.0.0
 Brotli==1.0.9
-fonttools==4.31.1
+fonttools==4.31.2
 lxml==4.8.0
