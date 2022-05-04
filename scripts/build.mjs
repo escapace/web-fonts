@@ -20,7 +20,7 @@ await build({
   sourcemap: true,
   bundle: true,
   platform: 'node',
-  target: 'node16',
+  target: 'node17',
   format: 'cjs',
   tsconfig: path.join(WD, 'tsconfig.json'),
   external: ['esbuild'],

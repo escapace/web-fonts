@@ -1,5 +1,9 @@
 **
-!/scripts/docker-entrypoint.sh
+!/lib/cli/*
+!/package.json
+!/pnpm-lock.yaml
 !/requirements.txt
-!/lib/pack/escapace-web-fonts-0.0.0.tgz
 !/scripts/docker-entrypoint.sh
+!/scripts/docker-entrypoint.sh
+!/src/utilities/font-loader.ts
+!/src/utilities/font-strip.py
