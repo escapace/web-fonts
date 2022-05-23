@@ -45,7 +45,7 @@
     "fs-extra": "10.1.0",
     "gzip-size": "7.0.0",
     "hashids": "2.2.10",
-    "husky": "7.0.4",
+    "husky": "8.0.1",
     "is-ci": "3.0.1",
     "lint-staged": "12.4.1",
     "lodash-es": "4.17.21",
