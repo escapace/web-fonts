@@ -5,7 +5,7 @@
   "author": "escapace <opensource@escapace.com>",
   "dependencies": {
     "aws-lambda-fastify": "2.2.0",
-    "fastify": "3.29.1",
+    "fastify": "4.3.0",
     "fastify-cookie": "^5.7.0",
     "fastify-etag": "^2.2.0",
     "fastify-sensible": "3.2.0",
